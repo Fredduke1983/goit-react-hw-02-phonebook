@@ -27,6 +27,15 @@ class App extends Component {
   }
   onSubmit = e => {
     e.preventDefault();
+    if (
+      this.state.contacts.find(el => {
+        return el.name === this.state.name;
+      })
+    ) {
+      alert('Its allready in case');
+      this.resetForm();
+      return;
+    }
 
     this.setState(prev => {
       return {
@@ -42,6 +51,8 @@ class App extends Component {
   onChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
   };
+
+  onBlur = () => {};
 
   onChangeFilter = e => {
     this.setState({ filter: e.target.value });
@@ -71,6 +82,7 @@ class App extends Component {
               pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
               onChange={this.onChange}
+              onBlur={this.onBlur}
               value={this.state.name}
               required
             />
@@ -88,7 +100,7 @@ class App extends Component {
         </form>
         <input onChange={this.onChangeFilter} value={this.state.filter}></input>
         <ul>
-          {this.filterContacts.length
+          {this.state.filter
             ? this.onFiltred(this.filterContacts)
             : this.onFiltred(this.state.contacts)}
         </ul>
