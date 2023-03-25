@@ -60,12 +60,28 @@ class App extends Component {
       return contact.name.toLowerCase().includes(e.target.value);
     });
   };
+  onDeleteContact = e => {
+    // console.log(e.target.id);
+    this.setState(prev => {
+      prev.contacts.indexOf();
+
+      return {
+        contacts: [
+          ...prev.contacts,
+          { name: this.state.name, id: nanoid(), number: this.state.number },
+        ],
+      };
+    });
+  };
 
   onFiltred(filterContacts) {
     return filterContacts.map(contact => {
       return (
         <li id={contact.id} key={contact.id}>
           {contact.name}: {contact.number}
+          <button onClick={this.onDeleteContact} id={contact.id}>
+            delete
+          </button>
         </li>
       );
     });
