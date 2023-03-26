@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { FilterDelBtn } from './contactFilter.styled';
+import { FilterDelBtn, FilterListItem } from './contactFilter.styled';
 
 export class ContactFilter extends Component {
   state = {
@@ -9,12 +9,12 @@ export class ContactFilter extends Component {
   onFilterContacts(filterContacts) {
     return filterContacts.map(contact => {
       return (
-        <li id={contact.id} key={contact.id}>
+        <FilterListItem id={contact.id} key={contact.id}>
           {contact.name}: {contact.number}
           <FilterDelBtn onClick={this.props.deleteContact} id={contact.id}>
             delete
           </FilterDelBtn>
-        </li>
+        </FilterListItem>
       );
     });
   }
