@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { ContactForm } from './ContactForm/ContactForm';
+import { ContactFilter } from './ContactFilter/ContactFilter';
 
 class App extends Component {
   constructor() {
     super();
-    this.filterContacts = [];
+    this.filteredContacts = [];
   }
 
   state = {
@@ -25,11 +27,12 @@ class App extends Component {
       number: '',
     });
   }
+
   onSubmit = e => {
     e.preventDefault();
     if (
-      this.state.contacts.find(el => {
-        return el.name === this.state.name;
+      this.state.contacts.find(({ name }) => {
+        return name === this.state.name;
       })
     ) {
       alert('Its allready in case');
@@ -52,74 +55,44 @@ class App extends Component {
     this.setState({ [name]: value });
   };
 
-  onBlur = () => {};
-
   onChangeFilter = e => {
     this.setState({ filter: e.target.value });
-    this.filterContacts = this.state.contacts.filter(contact => {
+    this.filteredContacts = this.state.contacts.filter(contact => {
       return contact.name.toLowerCase().includes(e.target.value);
     });
   };
-  onDeleteContact = e => {
-    // console.log(e.target.id);
-    this.setState(prev => {
-      prev.contacts.indexOf();
 
+  onDeleteContact = e => {
+    this.setState(prev => {
+      const indexFindContact = prev.contacts.findIndex(
+        el => el.id === e.target.id
+      );
+      prev.contacts.splice(indexFindContact, 1);
       return {
-        contacts: [
-          ...prev.contacts,
-          { name: this.state.name, id: nanoid(), number: this.state.number },
-        ],
+        contacts: [...prev.contacts],
       };
     });
   };
 
-  onFiltred(filterContacts) {
-    return filterContacts.map(contact => {
-      return (
-        <li id={contact.id} key={contact.id}>
-          {contact.name}: {contact.number}
-          <button onClick={this.onDeleteContact} id={contact.id}>
-            delete
-          </button>
-        </li>
-      );
-    });
-  }
-
   render() {
     return (
       <>
-        <form onSubmit={this.onSubmit}>
-          <label>
-            <input
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              onChange={this.onChange}
-              onBlur={this.onBlur}
-              value={this.state.name}
-              required
-            />
-            <input
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              onChange={this.onChange}
-              value={this.state.number}
-              required
-            />
-          </label>
-          <button type="submit">Add contact</button>
-        </form>
-        <input onChange={this.onChangeFilter} value={this.state.filter}></input>
-        <ul>
-          {this.state.filter
-            ? this.onFiltred(this.filterContacts)
-            : this.onFiltred(this.state.contacts)}
-        </ul>
+        <h1>Phonebook</h1>
+        <ContactForm
+          onSubmit={this.onSubmit}
+          onChange={this.onChange}
+          valueName={this.state.name}
+          valueNumber={this.state.number}
+        />
+        <h2>Contacts</h2>
+        <ContactFilter
+          onChange={this.onChange}
+          onChangeFilter={this.onChangeFilter}
+          filter={this.state.filter}
+          filteredContacts={this.filteredContacts}
+          contacts={this.state.contacts}
+          deleteContact={this.onDeleteContact}
+        />
       </>
     );
   }
