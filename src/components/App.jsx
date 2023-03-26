@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactFilter } from './ContactFilter/ContactFilter';
+import { PhoneBookStyle } from './app.styled';
 
 class App extends Component {
   constructor() {
@@ -76,7 +77,7 @@ class App extends Component {
 
   render() {
     return (
-      <>
+      <PhoneBookStyle>
         <h1>Phonebook</h1>
         <ContactForm
           onSubmit={this.onSubmit}
@@ -93,7 +94,7 @@ class App extends Component {
           contacts={this.state.contacts}
           deleteContact={this.onDeleteContact}
         />
-      </>
+      </PhoneBookStyle>
     );
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { FilterDelBtn } from './contactFilter.styled';
 
 export class ContactFilter extends Component {
   state = {
@@ -10,9 +11,9 @@ export class ContactFilter extends Component {
       return (
         <li id={contact.id} key={contact.id}>
           {contact.name}: {contact.number}
-          <button onClick={this.props.deleteContact} id={contact.id}>
+          <FilterDelBtn onClick={this.props.deleteContact} id={contact.id}>
             delete
-          </button>
+          </FilterDelBtn>
         </li>
       );
     });
@@ -22,7 +23,11 @@ export class ContactFilter extends Component {
     const { onChangeFilter, filter, filteredContacts, contacts } = this.props;
     return (
       <>
-        <input onChange={onChangeFilter} value={filter}></input>
+        <input
+          placeholder="search"
+          onChange={onChangeFilter}
+          value={filter}
+        ></input>
         <ul>
           {filter
             ? this.onFilterContacts(filteredContacts)
